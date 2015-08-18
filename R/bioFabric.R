@@ -981,11 +981,13 @@ bioFabric <- function(inGraph, userOrder=NULL, orderFunc=NULL,
   }
   # Done! Thanks for using BioFabric. Questions? Email wlongabaugh@systemsbiology.org
   
+  
+  # JavaScript is 0 index based so subtract 1 from source and target
+  orderedEdges[,1:2] <- orderedEdges[,1:2] - 1
   return(
     list(
-      nodes = lapply(
-        bfGraphLabels
-        ,function(x) list(name = x)
+      nodes = data.frame(
+        name = bfGraphLabels
       )
       ,links = structure(
         orderedEdges
