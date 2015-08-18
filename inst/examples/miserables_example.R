@@ -18,4 +18,6 @@ mis_igraph <- graph.data.frame(
   )
 )
 
-bioFabric( mis_igraph)
+bioFabric( mis_igraph )
+
+bioFabric_htmlwidget( mis_igraph )

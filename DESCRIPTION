@@ -14,5 +14,3 @@ Depends:
     R (>= 3.0.1)
 License: MIT
 LazyLoad: yes
-Collate:
-    'bioFabric.R'

@@ -6,15 +6,20 @@ HTMLWidgets.widget({
 
   initialize: function(el, width, height) {
 
-    return {
-      // TODO: add instance fields as required
-    }
+    return {}
 
   },
 
   renderValue: function(el, x, instance) {
-
-    el.innerText = x.message;
+    
+    // clear contents in case of dynamic/Shiny
+    el.innerHTML = "";
+    
+    // convert to array of objects
+    x.data.nodes = HTMLWidgets.dataframeToD3(x.data.nodes);
+    x.data.links = HTMLWidgets.dataframeToD3(x.data.links);
+    
+    fabric( x.data, {container: el} );
 
   },
 
