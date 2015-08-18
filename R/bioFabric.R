@@ -980,4 +980,17 @@ bioFabric <- function(inGraph, userOrder=NULL, orderFunc=NULL,
     }
   }
   # Done! Thanks for using BioFabric. Questions? Email wlongabaugh@systemsbiology.org
+  
+  return(
+    list(
+      nodes = lapply(
+        bfGraphLabels
+        ,function(x) list(name = x)
+      )
+      ,links = structure(
+        orderedEdges
+        ,names = c("source","target",names(orderedEdges)[-(1:2)])
+      )
+    )
+  )
 }
