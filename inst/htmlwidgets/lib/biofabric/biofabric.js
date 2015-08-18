@@ -1,8 +1,11 @@
 // adapted from www.biofabric.org/gallery/pages/SuperQuickBioFabric.html
+//  by Max Oxgden at https://github.com/maxogden/biofabric
 
 // WARNING! The code has NOT been tested on different networks besides miserables.json! Probably handles singleton nodes and duplicate links incorrectly! 
 
-// modified to be standalone
+// modified to be standalone for the htmlwidget
+//  https://github.com/timelyportfolio/RBioFabric
+
 var fabric = (function(){
   
   // Constants:
