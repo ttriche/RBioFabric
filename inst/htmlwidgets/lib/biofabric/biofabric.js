@@ -301,7 +301,9 @@ var fabric = (function(){
     var zlSel = mySvg.selectAll(".zoneLabel")
       .data(myGraph.nodes)
       .enter().append("svg:text")
-      .attr("transform", function(d) { return "translate(" + (PAD + (GRID * (d.zoneMin + d.zoneMax) / 2)) + "," + (PAD + (GRID * (d.row - 1))) + ") scale(" + 1 + ")" })
+      .attr("transform", function(d) { 
+        return "translate(" + (PAD + (GRID * (d.zoneMin + d.zoneMax) / 2)) + "," + (PAD + (GRID * (d.row - 1))) + ") scale(" + 1 + ")"
+      })
       .attr("class", "zoneLabel")
       .text(function(d) { return d.name })
       .style("opacity", "0.0")
@@ -321,9 +323,15 @@ var fabric = (function(){
     zlSel.attr("transform", sizeIt)
   
     // Zone labels are anti-aliased better when opacity is < 1.0!
-    mySvg.selectAll(".nodeLabel, .zoneLabel")
-      .style("opacity", "0.98")     
+    mySvg.selectAll(".nodeLabel")
+      .style("opacity", "0.98")
+      .style("text-anchor", "end");
+      
+    mySvg.selectAll(".zoneLabel")
+      .style("opacity", "0.98")
+      .style("text-anchor", "middle");
   }
+
   
   
   ///////////////////////////////////////////////////////////////////
