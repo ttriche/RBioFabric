@@ -6,7 +6,29 @@
 #'
 #' @export
 bioFabric_htmlwidget <- function(data, width = NULL, height = NULL) {
-
+  
+  # convert igraph
+  if(inherits(data,"igraph")){
+    #  need names if not provided
+    data <- autoNameForFabric( data )
+    data <- get.data.frame(
+      autoNameForFabric( data )
+      , what="both"
+    )
+    data <- list(
+      nodes = data.frame(
+        "name" = data$vertices$name
+        , data$vertices[-match("name",names(data$vertices))]
+        , stringsAsFactors = FALSE
+      )
+      , links = data.frame(
+        "source" = match(data$edges$from, data$vertices$name) - 1
+        , "target" = match(data$edges$to, data$vertices$name) - 1
+        , data$edges[-match(c("to","from"),names(data$edges))]
+      )
+    )
+  }
+  
   # forward options using x
   x = list(
     data = data

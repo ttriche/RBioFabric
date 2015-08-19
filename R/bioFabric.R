@@ -988,10 +988,20 @@ bioFabric <- function(inGraph, userOrder=NULL, orderFunc=NULL,
     list(
       nodes = data.frame(
         name = bfGraphLabels
+        ,row = seq.int(1, numV ) - 1
+        ,minCol = nodeMin - 1
+        ,maxCol = nodeMax - 1
+        ,zoneMin = zoneBoundsMin - 1 
+        ,zoneMax = zoneBoundsMax - 1
       )
       ,links = structure(
-        orderedEdges
-        ,names = c("source","target",names(orderedEdges)[-(1:2)])
+        data.frame(
+          orderedEdges
+          ,col = seq.int( 1, numE ) - 1
+          ,edgeType = edgeNames
+          ,stringsAsFactors = FALSE
+        )
+        ,names = c("source","target",names(orderedEdges)[-(1:2)],"col","edgeType")
       )
     )
   )

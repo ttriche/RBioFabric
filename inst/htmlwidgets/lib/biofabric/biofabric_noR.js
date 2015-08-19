@@ -102,9 +102,8 @@ var fabric = (function(){
     var hh = height / 2
     
     var bsvg = d3.select(opts.container || document.body).append("svg:svg")
-        .style("width", "100%")
-        .style("height", "100%")
-        .attr("viewBox", '0 -300 1200 1300')
+        .attr("width", width)
+        .attr("height", height)
         .style("background-color", opts.bgColor || "#FFFFFF")
   
     //
@@ -112,10 +111,10 @@ var fabric = (function(){
     //
     
     for (var i = 0; i < graph.nodes.length; i++) {
-      //graph.nodes[i].row = -1
+      graph.nodes[i].row = -1
       graph.nodes[i].degree = 0
-      //graph.nodes[i].zoneMin = -1000
-      //graph.nodes[i].zoneMax = -1000
+      graph.nodes[i].zoneMin = -1000
+      graph.nodes[i].zoneMax = -1000
       graph.nodes[i].neighbors = []
     }
   
@@ -153,7 +152,7 @@ var fabric = (function(){
     buildGraphPost(svg, graph)
     installForce(svg, gwidth, gheight, sfac)
     nodeToLines(svg, gwidth)
-    //sortGraph(graph)
+    sortGraph(graph)
     nodesToRows(svg)
     sortLinks(graph)
     linksToVert(svg)
@@ -303,7 +302,7 @@ var fabric = (function(){
       .text(function(d) { return d.name })
   
     var zlSel = mySvg.selectAll(".zoneLabel")
-      .data(myGraph.nodes.filter(function(d){return d.zoneMin}))
+      .data(myGraph.nodes)
       .enter().append("svg:text")
       .attr("transform", function(d) { 
         return "translate(" + (PAD + (GRID * (d.zoneMin + d.zoneMax) / 2)) + "," + (PAD + (GRID * (d.row - 1))) + ") scale(" + 1 + ")"
@@ -597,7 +596,7 @@ var fabric = (function(){
     for (var i = 0; i < sortingHat.length; i++) {
       var aGuy = sortingHat[i]
       var useLink = myGraph.links[aGuy.index]
-      /*useLink.col = i
+      useLink.col = i
       if ((lastGuy != null) && (aGuy.min > lastGuy.min)) {
         var gotIt = false
         for (var j = i - 1; j >= 0; j--) {
@@ -617,7 +616,6 @@ var fabric = (function(){
           }
         }
       }
-      */
       lastGuy = aGuy
     }
   }

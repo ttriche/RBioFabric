@@ -20,4 +20,4 @@ mis_igraph <- graph.data.frame(
 
 bioFabric( mis_igraph )
 
-bioFabric_htmlwidget( miserables )
+bioFabric_htmlwidget( bioFabric( mis_igraph ))
