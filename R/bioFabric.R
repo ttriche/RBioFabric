@@ -984,7 +984,7 @@ bioFabric <- function(inGraph, userOrder=NULL, orderFunc=NULL,
   
   # JavaScript is 0 index based so subtract 1 from source and target
   orderedEdges[,1:2] <- orderedEdges[,1:2] - 1
-  return(
+  return(invisible(
     list(
       nodes = data.frame(
         name = bfGraphLabels
@@ -1004,5 +1004,5 @@ bioFabric <- function(inGraph, userOrder=NULL, orderFunc=NULL,
         ,names = c("source","target",names(orderedEdges)[-(1:2)],"col","edgeType")
       )
     )
-  )
+  ))
 }
