@@ -21,3 +21,19 @@ mis_igraph <- graph.data.frame(
 bioFabric( mis_igraph )
 
 bioFabric_htmlwidget( bioFabric( mis_igraph ))
+
+
+# demo userOrder with igraph topological sort
+bioFabric_htmlwidget(
+  bioFabric(
+    mis_igraph
+    ,userOrder=get.data.frame(mis_igraph,what="vertices")[rev(topological.sort(mis_igraph)),]
+    )
+  )
+# for fun let's not rev the sort
+bioFabric_htmlwidget(
+  bioFabric(
+    mis_igraph
+    ,userOrder=get.data.frame(mis_igraph,what="vertices")[topological.sort(mis_igraph),]
+  )
+)
