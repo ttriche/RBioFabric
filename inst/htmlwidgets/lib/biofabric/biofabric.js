@@ -147,7 +147,7 @@ var fabric = (function(){
     var zoomg = bsvg.append("svg:g")
       //.attr("transform", "translate(" + hw + "," + hh + ") scale(" + sfac + ") translate(-" + gwidth / 2 + ",-" + gheight / 2 + ")")
       .attr("class", "biofabric zoomlayer")
-      .call(d3.behavior.zoom().scaleExtent([1, 15]).on("zoom", zoomed));
+      .call(d3.behavior.zoom().scaleExtent([0.5, 15]).on("zoom", zoomed));
       
     var svg = zoomg.append("g");
       
@@ -362,15 +362,21 @@ var fabric = (function(){
   //
   
   function fitGraph(mySvg) {
+    var minx = d3.min(
+      d3.selectAll(".nodeLabel")[0].map(function(d){
+        return -d.textLength.animVal.value;
+      })
+    )
+    
     var maxx = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("x")}));
     var maxy = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("y")}))
     
-    d3.select(mySvg[0][0].parentNode.parentNode).attr("viewBox",'0 0 ' + (+maxx+50) + ' ' + (+maxy+50));
+    d3.select(mySvg[0][0].parentNode.parentNode).attr("viewBox",minx +' 0 ' + (-minx+maxx+50) + ' ' + (+maxy+50));
   
     mySvg.select('.overlay')
-      .attr("x","0")
+      .attr("x",minx)
       .attr("y","0")
-      .attr("width",maxx+50)
+      .attr("width",-minx + maxx + 50)
       .attr("height",maxy+50);
   }
   
