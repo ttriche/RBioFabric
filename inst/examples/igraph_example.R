@@ -43,3 +43,12 @@ bioFabric_htmlwidget(
         as.vector
   )
 )
+
+
+# let's sort by authority score
+bioFabric_htmlwidget(
+  bioFabric(
+    karate
+    , userOrder = names(sort(authority.score(karate)$vector,decreasing=TRUE))
+  )
+)
