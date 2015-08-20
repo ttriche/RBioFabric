@@ -369,8 +369,8 @@ var fabric = (function(){
     mySvg.select('.overlay')
       .attr("x","0")
       .attr("y","0")
-      .attr("width",maxx)
-      .attr("height",maxy);
+      .attr("width",maxx+50)
+      .attr("height",maxy+50);
   }
   
   
