@@ -178,7 +178,8 @@ var fabric = (function(){
     setNodeLength(svg)
     drawLabels(svg, graph)
     colorNodesAndLinks(svg, 1.43)
-    fitGraph(svg, graph)
+    fitGraph( svg )
+    attachEvents( svg )
   }
   
   ///////////////////////////////////////////////////////////////////
@@ -266,8 +267,8 @@ var fabric = (function(){
         .attr("y", function(d) {return PAD + d.source.row * GRID - 5 })
         .attr("width", 10)
         .attr("height", 10)
-        .style("stroke-width", function(d) { return 4 })
-        .style("stroke", "black")
+        .style("stroke-width", function(d) { return 3 })
+        .style("stroke", cycleColor(1/1.43))
         .style("fill", cycleColor(1/1.43))
         .style("opacity", "0.0")
         .append("svg:title")
@@ -281,8 +282,8 @@ var fabric = (function(){
         .attr("y", function(d) {return PAD + d.target.row * GRID - 5 })
         .attr("width", 10)
         .attr("height", 10)
-        .style("stroke-width", function(d) { return 4 })
-        .style("stroke", "black")
+        .style("stroke-width", function(d) { return 3 })
+        .style("stroke", cycleColor(1/1.43))
         .style("fill", cycleColor(1/1.43))
         .style("opacity", "0.0")
         .append("svg:title")
@@ -360,7 +361,7 @@ var fabric = (function(){
   // Fit svg to its parent container
   //
   
-  function fitGraph(mySvg, myGraph) {
+  function fitGraph(mySvg) {
     var maxx = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("x")}));
     var maxy = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("y")}))
     
@@ -371,6 +372,66 @@ var fabric = (function(){
       .attr("y","0")
       .attr("width",maxx+50)
       .attr("height",maxy+50);
+  }
+  
+  ///////////////////////////////////////////////////////////////////
+  //
+  // Try to add some helpful interactivity
+  //  
+  
+  function attachEvents( mySvg ){
+    mySvg.selectAll('.zoneLabel, .nodeLabel, .glyph, .glyph2')
+      .on("mouseover", highlight )
+      .on("mouseout", unhighlight );
+      
+    function highlight(e){
+      var id;
+      var target = d3.select(this);
+      
+      if(!target.classed("glyph") && !target.classed("glyph2")){
+        id = e.index;
+      } else if(target.classed("glyph")) {
+        id = e.source.index;
+      } else if(target.classed("glyph2")) {
+        id = e.target.index;
+      }
+
+      mySvg.selectAll('.linkB,.linkF,.node,.glyph,.glyph2')[0]
+        .map(function(d){
+          var sel = d3.select(d);
+          var dat = sel.datum();
+          
+          sel[0][0].__data__.origStroke = sel.style("stroke");
+          sel[0][0].__data__.origFill = sel.style("fill");
+          
+          if( 
+            (typeof(dat.index) != "undefined" && dat.index==id) || 
+            (typeof(dat.source) != "undefined" && dat.source.index==id) ||
+            (typeof(dat.target) != "undefined" && dat.target.index==id)
+          ){
+              if(!sel.classed("glyph") && !sel.classed("glyph2")){
+                sel.style("stroke-width","6px");
+              }
+          } else {
+              sel.style("stroke-width","1px")
+              sel.style("stroke","gray")
+              sel.style("fill","gray")
+              sel.style("opacity","0.5");
+          }
+        })
+    }
+    
+    function unhighlight(e){
+      mySvg.selectAll('.linkB,.linkF,.node,.glyph,.glyph2')
+        .style("stroke-width","3px")
+        .style("opacity","0.98")
+        .style("stroke", function(d){
+          return d.origStroke;
+        })
+        .style("fill", function(d){
+          return d.origFill;
+        })
+    } 
   }
   
   
