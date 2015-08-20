@@ -144,8 +144,24 @@ var fabric = (function(){
     // Add the zooming transform at the top of the SVG tree. 
     //
   
-    var svg = bsvg.append("svg:g")
-    .attr("transform", "translate(" + hw + "," + hh + ") scale(" + sfac + ") translate(-" + gwidth / 2 + ",-" + gheight / 2 + ")")
+    var zoomg = bsvg.append("svg:g")
+      //.attr("transform", "translate(" + hw + "," + hh + ") scale(" + sfac + ") translate(-" + gwidth / 2 + ",-" + gheight / 2 + ")")
+      .attr("class", "biofabric zoomlayer")
+      .call(d3.behavior.zoom().scaleExtent([1, 15]).on("zoom", zoomed));
+      
+    var svg = zoomg.append("g");
+      
+    function zoomed() {
+      svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+    }
+      
+    // to pick up zoom events
+    svg.append("rect")
+      .attr("class", "biofabric overlay")
+      .style("pointer-events","all")
+      .style("fill","none")
+      .attr("width",width)
+      .attr("height",height);    
   
     assignNodesToCircle(graph, gheight / 2.3, (gwidth / 2), gheight / 2)
     buildGraph(svg, graph)
@@ -162,6 +178,7 @@ var fabric = (function(){
     setNodeLength(svg)
     drawLabels(svg, graph)
     colorNodesAndLinks(svg, 1.43)
+    fitGraph(svg, graph)
   }
   
   ///////////////////////////////////////////////////////////////////
@@ -336,6 +353,24 @@ var fabric = (function(){
       .style("text-anchor", "middle");
   }
 
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  // Fit svg to its parent container
+  //
+  
+  function fitGraph(mySvg, myGraph) {
+    var maxx = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("x")}));
+    var maxy = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("y")}))
+    
+    d3.select(mySvg[0][0].parentNode.parentNode).attr("viewBox",'0 0 ' + maxx + ' ' + maxy);
+  
+    mySvg.select('.overlay')
+      .attr("x","0")
+      .attr("y","0")
+      .attr("width",maxx)
+      .attr("height",maxy)
+  }
   
   
   ///////////////////////////////////////////////////////////////////
