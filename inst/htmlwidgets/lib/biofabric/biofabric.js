@@ -314,8 +314,9 @@ var fabric = (function(){
       .attr("class", "nodeLabel")
       .text(function(d) { return d.name })
       .style("opacity", "0.0")
-      .attr("x", function(d) { return PAD + (GRID * d.minCol) })
+      .attr("x", function(d) { return PAD + (GRID * d.minCol) - 10 })
       .attr("y", function(d) { return PAD + (GRID * d.row) })
+      .attr("dy","0.3em")
       .append("svg:title")
       .text(function(d) { return d.name })
   
@@ -363,13 +364,13 @@ var fabric = (function(){
     var maxx = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("x")}));
     var maxy = d3.max(mySvg.selectAll(".glyph2")[0].map(function(d){return +d3.select(d).attr("y")}))
     
-    d3.select(mySvg[0][0].parentNode.parentNode).attr("viewBox",'0 0 ' + maxx + ' ' + maxy);
+    d3.select(mySvg[0][0].parentNode.parentNode).attr("viewBox",'0 0 ' + (+maxx+50) + ' ' + (+maxy+50));
   
     mySvg.select('.overlay')
       .attr("x","0")
       .attr("y","0")
       .attr("width",maxx)
-      .attr("height",maxy)
+      .attr("height",maxy);
   }
   
   
