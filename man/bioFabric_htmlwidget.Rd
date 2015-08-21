@@ -2,11 +2,115 @@
 % Please edit documentation in R/bioFabric_htmlwidget.R
 \name{bioFabric_htmlwidget}
 \alias{bioFabric_htmlwidget}
-\title{<Add Title>}
+\title{Create an Interactive BioFabric Plot}
 \usage{
 bioFabric_htmlwidget(data, width = NULL, height = NULL)
 }
+\arguments{
+\item{data}{an \code{expression} to create a \code{\link{bioFabric}} plot}
+
+\item{width,}{height a valid \code{CSS} size for the \code{div} container
+         for the htmlwidget output.}
+}
 \description{
-<Add Description>
+bioFabric produces static plot.  This uses the output from bioFabric
+to create a rich interactive d3.js visualization.  Since it is an
+htmlwidget, it will work in all R contexts including the console, RStudio,
+rmarkdown, and Shiny.
+}
+\examples{
+library(igraph)
+library(igraphdata)
+library(dplyr)
+library(RBioFabric)
+
+bfGraph = graph.tree(20, children=2, mode="out")
+bfGraph <- autoNameForFabric(bfGraph)
+startAtBF1 <- function(bfGraph) {
+  return (defaultNodeOrder(bfGraph, firstLabel=V(bfGraph)[1]$name))
+}
+
+bioFabric_htmlwidget(
+  bioFabric(bfGraph, orderFunc=startAtBF1)
+)
+
+bioFabric_htmlwidget(
+  bioFabric(bfGraph)
+)
+
+data(karate)
+bioFabric_htmlwidget(
+  bioFabric(karate)
+)
+
+# use igraph dendPlot example
+#   to show how we can provide a different sort order
+data( karate )
+fc <- fastgreedy.community(karate)
+plot(fc, karate)
+
+# use default order which is degree
+bioFabric( karate )
+
+# if we wanted to specify by community
+bioFabric_htmlwidget(
+  bioFabric(
+    karate
+    , userOrder = 
+      data.frame(membership = membership(fc), degree = degree(karate)) \%>\%
+        mutate( id = rownames(.) ) \%>\%
+        arrange( membership, desc( degree ) ) \%>\%
+        select( id ) \%>\%
+        as.vector
+  )
+)
+
+
+# let's sort by authority score
+bioFabric_htmlwidget(
+  bioFabric(
+    karate
+    , userOrder = names(sort(authority.score(karate)$vector,decreasing=TRUE))
+  )
+)
+library(RBioFabric)
+library(igraph)
+
+# d3 example from BioFabric
+#  source:   https://github.com/wjrl/D3BioFabric
+#  example:  http://rawgit.com/wjrl/D3BioFabric/master/src/JustBioFabric.html
+
+miserables <- jsonlite::fromJSON(
+  "https://rawgit.com/wjrl/D3BioFabric/master/src/data/miserablesSimple.json"
+)
+
+mis_igraph <- graph.data.frame(
+  d = miserables$links
+  ,vertices = data.frame(
+    id = as.character( 0:(nrow(miserables$nodes)-1) ) 
+    ,name = miserables$nodes
+    ,stringsAsFactors = F
+  )
+)
+
+bioFabric( mis_igraph )
+
+bioFabric_htmlwidget( bioFabric( mis_igraph ))
+
+
+# demo userOrder with igraph topological sort
+bioFabric_htmlwidget(
+  bioFabric(
+    mis_igraph
+    ,userOrder=get.data.frame(mis_igraph,what="vertices")[rev(topological.sort(mis_igraph)),]
+    )
+  )
+# for fun let's not rev the sort
+bioFabric_htmlwidget(
+  bioFabric(
+    mis_igraph
+    ,userOrder=get.data.frame(mis_igraph,what="vertices")[topological.sort(mis_igraph),]
+  )
+)
 }
 

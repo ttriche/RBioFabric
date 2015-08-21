@@ -1,7 +1,17 @@
-#' <Add Title>
+#' Create an Interactive BioFabric Plot
 #'
-#' <Add Description>
+#' bioFabric produces static plot.  This uses the output from bioFabric
+#' to create a rich interactive d3.js visualization.  Since it is an 
+#' htmlwidget, it will work in all R contexts including the console, RStudio,
+#' rmarkdown, and Shiny.
+#' 
+#' @param data an \code{expression} to create a \code{\link{bioFabric}} plot
+#' @param width, height a valid \code{CSS} size for the \code{div} container
+#'          for the htmlwidget output.
 #'
+#' @example inst/examples/igraph_example.R
+#' @example inst/examples/miserables_example.R
+#' 
 #' @import htmlwidgets
 #'
 #' @export
@@ -62,12 +72,12 @@ bioFabric_htmlwidget <- function(data, width = NULL, height = NULL) {
 #'
 #' @export
 bioFabric_htmlwidgetOutput <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'bioFabric_htmlwidget', width, height, package = 'RBioFabric')
+  htmlwidgets::shinyWidgetOutput(outputId, 'bioFabric_htmlwidget', width, height, package = 'RBioFabric')
 }
 
 #' @rdname bioFabric_htmlwidget-shiny
 #' @export
 renderBioFabric_htmlwidget <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, bioFabric_htmlwidgetOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, bioFabric_htmlwidgetOutput, env, quoted = TRUE)
 }
