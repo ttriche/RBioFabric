@@ -4,12 +4,17 @@
 \alias{bioFabric_htmlwidget}
 \title{Create an Interactive BioFabric Plot}
 \usage{
-bioFabric_htmlwidget(data, width = NULL, height = NULL)
+bioFabric_htmlwidget(data, zoomMin = 0.5, zoomMax = 15, width = NULL,
+  height = NULL)
 }
 \arguments{
 \item{data}{an \code{expression} to create a \code{\link{bioFabric}} plot}
 
-\item{width,}{height a valid \code{CSS} size for the \code{div} container
+\item{zoomMin,zoomMax}{\code{numeric} giving the minimum and maximum allowable
+zoom.  The defaults are \code{zoomMin = 0.5}.
+and \code{zoomMax = 15}.}
+
+\item{width,height}{a valid \code{CSS} size for the \code{div} container
          for the htmlwidget output.}
 }
 \description{

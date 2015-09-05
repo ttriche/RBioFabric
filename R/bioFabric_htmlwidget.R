@@ -6,7 +6,10 @@
 #' rmarkdown, and Shiny.
 #' 
 #' @param data an \code{expression} to create a \code{\link{bioFabric}} plot
-#' @param width, height a valid \code{CSS} size for the \code{div} container
+#' @param zoomMin,zoomMax \code{numeric} giving the minimum and maximum allowable
+#'          zoom.  The defaults are \code{zoomMin = 0.5}.
+#'          and \code{zoomMax = 15}.
+#' @param width,height a valid \code{CSS} size for the \code{div} container
 #'          for the htmlwidget output.
 #'
 #' @example inst/examples/igraph_example.R
@@ -15,7 +18,9 @@
 #' @import htmlwidgets
 #'
 #' @export
-bioFabric_htmlwidget <- function(data, width = NULL, height = NULL) {
+bioFabric_htmlwidget <- function(
+  data, zoomMin = 0.5, zoomMax = 15, width = NULL, height = NULL
+) {
   
   # convert igraph
   if(inherits(data,"igraph")){
@@ -41,7 +46,11 @@ bioFabric_htmlwidget <- function(data, width = NULL, height = NULL) {
   
   # forward options using x
   x = list(
-    data = data
+    data = data,
+    options = list(
+      zoomMin = zoomMin,
+      zoomMax = zoomMax
+    )
   )
 
   # create widget

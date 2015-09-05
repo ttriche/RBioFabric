@@ -142,12 +142,11 @@ var fabric = (function(){
   
     //
     // Add the zooming transform at the top of the SVG tree. 
-    //
-  
+
     var zoomg = bsvg.append("svg:g")
       //.attr("transform", "translate(" + hw + "," + hh + ") scale(" + sfac + ") translate(-" + gwidth / 2 + ",-" + gheight / 2 + ")")
       .attr("class", "biofabric zoomlayer")
-      .call(d3.behavior.zoom().scaleExtent([0.5, 15]).on("zoom", zoomed));
+      .call(d3.behavior.zoom().scaleExtent([opts.zoomMin, opts.zoomMax]).on("zoom", zoomed));
       
     var svg = zoomg.append("g");
       
