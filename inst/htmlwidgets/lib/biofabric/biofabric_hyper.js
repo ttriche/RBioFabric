@@ -1,6 +1,63 @@
 // merge http://bl.ocks.org/syntagmatic/6492074 with biofabric so that:
 //   1) I can use _heights) of individual vertices to represent incidence 
 //   2) I can auto-size the grid for biofabric & auto-focus on max(deg(bfg))
+//   3) I can switch back & forth between biofabric plots by using transitions
+//      like http://www.biofabric.org/gallery/pages/SuperQuickBioFabric.html
+//
+// relevant hyperbolic grid d3.js block: 
+/* 
+var canvas = d3.select("canvas").node();
+var xgrid = 10,
+    ygrid = 10,
+    k = 100;
+var context = canvas.getContext("2d");
+context.translate(canvas.width/2, canvas.height/2);
+
+d3.select("canvas").on("mousemove", draw);
+
+function hyper(p) {
+  //transform to radial hyperbolic
+  var r = Math.sqrt(p[0]*p[0] + p[1]*p[1]),
+      x1 = p[0] / (r + k),
+      y1 = p[1] / (r + k);
+  return [x1, y1];
+}
+
+function draw() {
+  context.fillStyle = "rgba(255,255,255,1)";
+  context.fillRect(-canvas.width/2,-canvas.height/2,canvas.width,canvas.height);
+  context.strokeStyle = "rgba(0,0,0,0.4)";
+  var mouse = d3.mouse(this);
+  var i = canvas.width;
+  while (i -= xgrid) {
+    context.beginPath();
+    var j = canvas.height;
+    while (j -= ygrid) {
+      var p = hyper([i+mouse[0]-canvas.width,j+mouse[1]-canvas.height]);
+      var x = p[0]*canvas.width*.5;
+      var y = p[1]*canvas.height*.5;
+      if (j == ygrid) context.moveTo(x,y);
+      context.lineTo(x,y);
+    }
+    context.stroke()
+  }
+
+  var j = canvas.height;
+  while (j -= ygrid) {
+    context.beginPath();
+    var i = canvas.width;
+    while (i -= xgrid) {
+      var p = hyper([i+mouse[0]-canvas.width,j+mouse[1]-canvas.height]);
+      var x = p[0]*canvas.width*.5;
+      var y = p[1]*canvas.height*.5;
+      if (j == ygrid) context.moveTo(x,y);
+      context.lineTo(x,y);
+    }
+    context.stroke()
+  }
+}
+
+*/
 
 var fabric = (function(){
   
